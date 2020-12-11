@@ -2,6 +2,7 @@ package org.csc133.a3.gameobjects;
 
 import com.codename1.ui.Graphics;
 import com.codename1.ui.Image;
+import org.csc133.a3.main.GameWorld;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -159,8 +160,10 @@ public abstract class Helicopter extends MovableGameObject implements ISteerable
     protected void collideWithObject(GameObject otherObject) {
         if (otherObject instanceof Helicopter) {
             takeDamage(DAMAGE_FROM_HELICOPTER);
+            GameWorld.helicopterCollisionSound.play();
         } else if (otherObject instanceof Bird) {
             takeDamage(DAMAGE_FROM_BIRD);
+            GameWorld.birdCollisionSound.play();
         } else if (otherObject instanceof SkyScraper) {
             if (((SkyScraper) otherObject).getSequenceNumber() == (lastSkyScraperReached + 1)) {
                 ++lastSkyScraperReached;
@@ -168,6 +171,7 @@ public abstract class Helicopter extends MovableGameObject implements ISteerable
         } else if (otherObject instanceof RefuelingBlimp) {
             if (((RefuelingBlimp) otherObject).getCapacity() > 0) {
                 this.setFuelLevel(getFuelLevel() + (((RefuelingBlimp) otherObject).getCapacity()));
+                GameWorld.blimpCollisionSound.play();
             }
         }
     }

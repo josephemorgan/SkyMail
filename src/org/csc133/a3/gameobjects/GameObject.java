@@ -138,8 +138,8 @@ public abstract class GameObject implements ICollider {
             return;
         } else {
             alreadyCollidedList.put(otherObject, System.currentTimeMillis());
-            collideWithObject(otherObject);
             otherObject.collideWithObject(this);
+            collideWithObject(otherObject);
         }
     }
 

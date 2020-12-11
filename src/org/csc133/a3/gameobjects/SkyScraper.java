@@ -51,7 +51,7 @@ public class SkyScraper extends FixedGameObject {
     @Override
     protected void collideWithObject(GameObject otherObject) {
         if (otherObject instanceof PlayerHelicopter) {
-            if (((PlayerHelicopter) otherObject).getLastSkyScraperReached() == sequenceNumber - 1)
+            if (((PlayerHelicopter) otherObject).getLastSkyScraperReached() == sequenceNumber)
                 setHasBeenReached();
         }
     }

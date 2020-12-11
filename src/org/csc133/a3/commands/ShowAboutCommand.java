@@ -25,7 +25,8 @@ public class ShowAboutCommand extends Command {
     public void actionPerformed(ActionEvent evt) {
         super.actionPerformed(evt);
         gw.pause();
-        Dialog.show("About", "Author: Joseph Morgan\nCourse: CSC133\nv 0.0.1", new Command("Close"));
+        String attribution = "Background music by sawsquarenoise, downloaded from https://freemusicarchive.org/genre/Chiptune - CreativeCommons license with attribution \nOther sounds downloaded from https://www.zapsplat.com/?s=cry&post_type=music&sound-effect-category-id= - Standard License";
+        Dialog.show("About", "Author: Joseph Morgan\nCourse: CSC133\nv 0.0.1\n" + attribution, new Command("Close"));
         gw.unpause();
     }
 }

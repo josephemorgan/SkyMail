@@ -6,10 +6,13 @@ import com.codename1.ui.events.ActionEvent;
 import org.csc133.a3.gameobjects.*;
 import org.csc133.a3.gameobjects.strategies.TargetPlayerStrategy;
 import org.csc133.a3.gameobjects.strategies.TargetSkyScraperStrategy;
+import org.csc133.a3.sound.BGSound;
+import org.csc133.a3.sound.Sound;
 import org.csc133.a3.views.GlassCockpit;
 import org.csc133.a3.views.ITimer;
 import org.csc133.a3.views.MapView;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 /**
@@ -25,12 +28,17 @@ public class GameWorld {
     private static final int INITIAL_PLAYER_LIVES = 3;
     private static Location minLocation = new Location(0, 0);
     private static Location maxLocation = new Location(0, 0);
-    private static final Random rand = new Random();
     private final MapView map;
     private final GlassCockpit hud;
     private final ITimer gameTime;
     private GameObjectCollection gameObjectCollection = new GameObjectCollection();
     private Location startLocation;
+    private BGSound bgSound;
+
+    public static Sound helicopterCollisionSound;
+    public static Sound blimpCollisionSound;
+    public static Sound birdCollisionSound;
+    public static Sound lossOfLifeSound;
 
     /**
      * Instantiates a new Game world.
@@ -45,6 +53,7 @@ public class GameWorld {
         minLocation = map.getMinLocation();
         maxLocation = map.getMaxLocation();
         this.gameTime = gameTime;
+        bgSound = new BGSound("/background.wav");
     }
 
     /**
@@ -82,6 +91,17 @@ public class GameWorld {
         generateCliMap();
         map.update(getGameObjectCollection());
         hud.update(getGameObjectCollection());
+
+        bgSound.setVolume(50);
+        bgSound.play();
+        helicopterCollisionSound = new Sound("/crash.wav");
+        blimpCollisionSound = new Sound("/charge.wav");
+        birdCollisionSound = new Sound("/splat.wav");
+        lossOfLifeSound = new Sound("/die.wav");
+        helicopterCollisionSound.setVolume(50);
+        blimpCollisionSound.setVolume(25);
+        birdCollisionSound.setVolume(50);
+        lossOfLifeSound.setVolume(50);
     }
 
     /**
@@ -140,6 +160,7 @@ public class GameWorld {
         hud.update(getGameObjectCollection());
 
         checkForCollisions();
+
     }
 
     /**
@@ -236,6 +257,7 @@ public class GameWorld {
     }
 
     private void loseLife() {
+        GameWorld.lossOfLifeSound.play();
         PlayerHelicopter p = gameObjectCollection.findPlayer();
         p.decrementLives();
         p.setLocation(startLocation);
